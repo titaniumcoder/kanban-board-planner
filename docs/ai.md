@@ -1,11 +1,12 @@
 # AI Tool Setup
 
-This project includes a local sandbox for running Claude Code in a containerized development environment.
+This project supports two AI coding tools: Claude Code (sandboxed via Podman) and Aider (run directly on the host).
 
 ## Files
 
-- [sandbox-claude.sh](../sandbox-claude.sh): helper script to build (if needed) and run the sandbox.
-- [Dockerfile.sandbox](../Dockerfile.sandbox): image definition used by the script.
+- [sandbox-claude.sh](../sandbox-claude.sh): helper script to build (if needed) and run the Claude sandbox.
+- [Dockerfile.sandbox](../Dockerfile.sandbox): image definition used by the Claude script.
+- [.aider.conf.yml](../.aider.conf.yml): Aider configuration file, checked into version control.
 
 ## What the Sandbox Provides
 
@@ -60,4 +61,32 @@ Example:
 export ANTHROPIC_API_KEY="your_key_here"
 ./sandbox-claude.sh
 ```
+
+## Aider with Ollama
+
+Aider does not require a sandbox — it proposes diffs and asks for confirmation before applying
+any change, and it scopes itself to the directory it is run from.
+
+### Requirements
+
+- Aider installed on your host: `uv tool install --force --python python3.12 --with pip aider-chat@latest`
+- Ollama running locally with the model pulled: `ollama pull qwen3-coder-next`
+- Alternative use LM Studio
+
+### Usage
+
+From the repository root:
+
+```sh
+aider
+```
+
+### Configuration
+
+Project-level Aider settings are stored in [.aider.conf.yml](../.aider.conf.yml) and checked
+into version control. Personal overrides (like `OLLAMA_API_BASE`) go in `~/.aider.conf.yml`
+or as environment variables.
+
+Aider runtime files (history, cache, session state) are excluded via `.gitignore` while
+`.aider.conf.yml` is explicitly kept.
 
