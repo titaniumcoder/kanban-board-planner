@@ -35,3 +35,4 @@ kanban_board_planner-*.tar
 npm-debug.log
 /assets/node_modules/
 
+.aider*
